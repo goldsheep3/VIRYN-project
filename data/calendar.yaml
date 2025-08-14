@@ -1,0 +1,10 @@
+eras:
+- Nsj:
+  - name: "新神纪"
+  - start_year: 1
+  - year_length: 1000
+  - months: 12
+  - days_per_month: 30
+  - hours_per_day: 24
+
+default_era: Nsj
