@@ -30,7 +30,7 @@ story:  # 故事事件特有数据
   related:
     upstream: null  # 上游故事事件
     story: null  # 相关故事事件（可为数组）
-    characer: null  # 相关角色设定事件（可为数组）
+    character: null  # 相关角色设定事件（可为数组）
     world: null  # 相关世界设定事件（可为数组）
   time:
     start: Nsj.17.01.01:14  # 事件开始时间，采用世界观特有纪元计算方法，精确到小时

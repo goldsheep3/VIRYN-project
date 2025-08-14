@@ -1,0 +1,42 @@
+目前API包含（可以根据代码情况合并）：
+
+- 获取事件列表
+- 获取setting事件列表
+- 获取setting/character事件列表
+- 获取setting/world事件列表
+- 获取story事件列表
+- 获取image事件列表
+- 获取事件详情
+- 获取设定事件外部属性（根据事件id+属性名）
+- 获取创作者列表
+- 新建story事件[1]
+- 新建setting/character事件[1]
+- 新建setting/world事件[1]
+- 新建image事件[1]
+- 新建设定事件外部属性[1]
+- 修改story事件特有内部属性[1]
+- 修改story事件content内容[1]
+- 修改setting事件外部属性[1]
+- 删除setting事件外部属性[1]
+- 删除story事件[1]
+- 获取存在pre的事件列表
+- 获取存在pre的story事件列表
+- 获取存在pre的setting事件列表
+- 获取存在pre且状态为新建的事件列表
+- 获取setting事件中存在pre的属性列表
+- 批准通过pre的story新增/修改事件[2]
+- 批准通过pre的setting新增事件[2]
+- 批准通过pre的setting外部属性新增/修改事件[2]
+- 批准通过pre的story删除事件[2]
+- 批准通过pre的setting外部属性删除事件[2]
+- 批准通过pre的setting删除事件[2]
+- 批准驳回pre的story新增/修改事件[2]
+- 批准驳回pre的setting新增事件[2]
+- 批准驳回pre的setting外部属性新增/修改事件[2]
+- 批准驳回pre的story删除事件[2]
+- 批准驳回pre的setting外部属性删除事件[2]
+- 批准驳回pre的setting删除事件[2]
+
+其中：
+- 标注[1]的API在传入的`operator_qq`存在于`data/ops.yaml`读取出数组包含的QQ号时，直接替换/新增/删除而不处理为PRE状态，但原理上是通过创建PRE状态后再批准通过的方式实现的。
+- 标注[2]的API仅在传入的`operator_qq`存在于`data/ops.yaml`读取出数组包含的QQ号时，才能批准通过/驳回PRE状态的事件，否则返回错误提示且不更改。

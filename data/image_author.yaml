@@ -1,6 +1,3 @@
 4e021f.png:
-  - author: 2940119626
-  - state: pre
-5e021f.png:
-  - author: 2940119626
-  - state: release
+- author: 2940119626
+- state: release
