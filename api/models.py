@@ -1,4 +1,4 @@
-from typing import List, Optional, Union
+from typing import List, Optional
 from pydantic import BaseModel
 
 
@@ -18,12 +18,12 @@ class AuthorGroup(BaseModel):
 
 class EventRelated(BaseModel):
     """事件相关基类"""
-    story: Optional[Union[str, List[str]]] = None
-    character: Optional[Union[str, List[str]]] = None
-    world: Optional[Union[str, List[str]]] = None
+    story: Optional[List[str]] = None
+    character: Optional[List[str]] = None
+    world: Optional[List[str]] = None
 
 
-class EventProperties(BaseModel):
+class InternalProperties(BaseModel):
     """事件内部属性基类"""
     title: str  # 事件名
     type: str  # story, setting/world, setting/character
@@ -47,11 +47,21 @@ class EventBase(BaseModel):
     """事件基类
     id: 事件文件的相对路径，唯一标识"""
     id: str
-    properties: EventProperties
+    properties: InternalProperties
+
+
+class ImageEvent(EventBase):
+    """图片事件基类"""
+    type: str = "image"
+
+
+class MDEventBase(EventBase):
+    """Markdown 事件基类"""
 
 
 class StoryTime(BaseModel):
     """故事时间基类"""
+    # todo: 之后修改为纪元时间类进行验证
     start: str  # 世界观纪元时间
     end: str
 
@@ -62,14 +72,14 @@ class StoryData(BaseModel):
     time: StoryTime
 
 
-class StoryEvent(EventBase):
+class StoryEvent(MDEventBase):
     """故事事件基类"""
     story: StoryData
     content: str
     type: str = "story"
 
 
-class SettingEvent(EventBase):
+class SettingEvent(MDEventBase):
     """设定事件基类"""
     content: List[ExternalProperty]
     type: str = "setting"

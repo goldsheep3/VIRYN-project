@@ -21,17 +21,17 @@ author:
   contributors: 2940119626  # 事件全部贡献者，qq号（可为数组）
 date: 2025.08.13 22:57:10  # 事件创建时间，UTC+8
 last_date: 2025.08.13 22:27:11  # 事件最后修改时间，UTF+8
-state: original  # 事件状态（原生`original`/正常`release`/有未审批的更改`pre`）
+state: original  # 事件状态（原生`original`/正常`release`/文件中包含PRE状态外部属性，或该文件本身处在PRE状态`pre`）
+related:
+  story: null  # 相关故事事件（可为数组）
+  character: null  # 相关角色设定事件（可为数组）
+  world: null  # 相关世界设定事件（可为数组）
 ```
 内部属性中的qq号可以通过存储目录的`data/authors.yaml`文件获取。
 对于故事事件，其特有内部属性为：
 ```yaml
 story:  # 故事事件特有数据
-  related:
-    upstream: null  # 上游故事事件
-    story: null  # 相关故事事件（可为数组）
-    character: null  # 相关角色设定事件（可为数组）
-    world: null  # 相关世界设定事件（可为数组）
+  upstream: null  # 上游故事事件
   time:
     start: Nsj.17.01.01:14  # 事件开始时间，采用世界观特有纪元计算方法，精确到小时
     end: Nsj.17.01.01:17  # 事件结束时间，采用世界观特有纪元计算方法，精确到小时

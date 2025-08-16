@@ -1,18 +1,31 @@
 from typing import List, Optional
+
 from api.models import (
-    EventBase, StoryEvent, SettingEvent, CharacterSettingEvent, WorldSettingEvent, ExternalProperty, Author, StoryData
+    EventBase, StoryEvent, SettingEvent, CharacterSettingEvent, WorldSettingEvent, ExternalProperty, Author, StoryData,
+    ImageEvent
 )
+from api import event_manager as manager
+from api.log import ApiLogger
+
+logger = ApiLogger()
 
 
 # 1. 获取事件列表
-def get_events(operator_qq: Optional[str] = None) -> List[EventBase]:
-    """获取所有事件列表。"""
-    ...
+def get_events(_operator_qq: Optional[str] = None) -> List[EventBase]:
+    """获取所有事件列表"""
+    logger.debug(f"get_events called, operator_qq={_operator_qq}")
+    events = manager.get_events('all', 'all')
+    logger.debug(f"get_events 返回 {len(events)} 个事件")
+    return events
 
 
 # 2. 获取setting事件列表
 def get_setting_events(operator_qq: Optional[str] = None) -> List[SettingEvent]:
     """获取所有setting事件列表。"""
+    # 1. 遍历`/event`目录，获取所有的事件文件
+    # 2. 解析每个事件文件，生成对应的EventBase对象
+    # 3. 过滤出type为`setting/world`或`setting/character`的事件
+    # 4. 返回所有事件对象的列表
     ...
 
 
@@ -35,7 +48,7 @@ def get_story_events(operator_qq: Optional[str] = None) -> List[StoryEvent]:
 
 
 # 6. 获取image事件列表
-def get_image_events(operator_qq: Optional[str] = None) -> List[EventBase]:
+def get_image_events(operator_qq: Optional[str] = None) -> List[ImageEvent]:
     """获取所有image事件列表。"""
     ...
 

@@ -2,3 +2,6 @@
 event/image/
 event/setting/
 event/story
+
+# 日志文件
+/logs

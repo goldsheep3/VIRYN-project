@@ -1,18 +1,26 @@
 from fastapi import FastAPI, Query
 from typing import List, Optional
+
 from api.models import (
-    EventBase, StoryEvent, SettingEvent, CharacterSettingEvent, WorldSettingEvent, ExternalProperty, Author, StoryData
+    EventBase, StoryEvent, SettingEvent, CharacterSettingEvent, WorldSettingEvent, ExternalProperty, Author, StoryData,
+    ImageEvent
 )
 from api import utils
+from api.log import ApiLogger
 
+logger = ApiLogger()
 app = FastAPI()
 
 
 # 1. 获取事件列表
 @app.get('/events')
 def get_events(operator_qq: Optional[str] = Query(None)) -> List[EventBase]:
-    """获取所有事件列表。可选参数operator_qq用于权限和PRE审核。"""
-    return utils.get_events(operator_qq)
+    """获取所有事件列表"""
+    logger.debug(f"收到 /events 请求，operator_qq={operator_qq}")
+    logger.debug("调用 utils.get_events")
+    events = utils.get_events(operator_qq)
+    logger.debug(f"utils.get_events 返回 {len(events)} 个事件")
+    return events
 
 
 # 2. 获取setting事件列表
@@ -45,7 +53,7 @@ def get_story_events(operator_qq: Optional[str] = Query(None)) -> List[StoryEven
 
 # 6. 获取image事件列表
 @app.get('/events/image')
-def get_image_events(operator_qq: Optional[str] = Query(None)) -> List[EventBase]:
+def get_image_events(operator_qq: Optional[str] = Query(None)) -> List[ImageEvent]:
     """获取所有image事件列表。"""
     return utils.get_image_events(operator_qq)
 
