@@ -1,9 +1,9 @@
 from fastapi import FastAPI, Query
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from api.models import (
     EventBase, StoryEvent, SettingEvent, CharacterSettingEvent, WorldSettingEvent, ExternalProperty, Author, StoryData,
-    ImageEvent
+    ImageEvent, ALL_EVENT
 )
 from api import utils
 from api.log import ApiLogger
@@ -14,8 +14,10 @@ app = FastAPI()
 
 # 1. 获取事件列表
 @app.get('/events')
-def get_events(operator_qq: Optional[str] = Query(None)) -> List[EventBase]:
-    """获取所有事件列表"""
+def get_events(
+        operator_qq: Optional[str] = Query(None)
+) -> List[ALL_EVENT]:
+    """获取所有事件列表，返回完整字段（支持多态）"""
     logger.debug(f"收到 /events 请求，operator_qq={operator_qq}")
     logger.debug("调用 utils.get_events")
     events = utils.get_events(operator_qq)

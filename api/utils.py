@@ -2,7 +2,7 @@ from typing import List, Optional
 
 from api.models import (
     EventBase, StoryEvent, SettingEvent, CharacterSettingEvent, WorldSettingEvent, ExternalProperty, Author, StoryData,
-    ImageEvent
+    ImageEvent, ALL_EVENT
 )
 from api import event_manager as manager
 from api.log import ApiLogger
@@ -11,7 +11,7 @@ logger = ApiLogger()
 
 
 # 1. 获取事件列表
-def get_events(_operator_qq: Optional[str] = None) -> List[EventBase]:
+def get_events(_operator_qq: Optional[str] = None) -> List[ALL_EVENT]:
     """获取所有事件列表"""
     logger.debug(f"get_events called, operator_qq={_operator_qq}")
     events = manager.get_events('all', 'all')

@@ -7,7 +7,7 @@ import yaml
 
 from api.models import (
     EventBase, StoryEvent, Author, StoryData, AuthorGroup, InternalProperties, EventRelated, StoryTime, ImageEvent,
-    MDEventBase
+    MDEventBase, ALL_EVENT
 )
 from api.log import ApiLogger
 
@@ -138,13 +138,13 @@ def _get_md_events(md_files, authors, filter_pre) -> List[MDEventBase]:
     """获取 Markdown 事件列表"""
     md_events = list()
     for fpath in md_files:
+        post = frontmatter.load(fpath)
+        fm = post.metadata
         event_id, internal_properties = _get_internal_properties(fpath, authors, filter_pre)
         if not internal_properties:
             # log: "Failed to get internal properties for file: {fpath}"
             continue
         if internal_properties.type == 'story':
-            post = frontmatter.load(fpath)
-            fm = post.metadata
             story_data = fm.get('story', dict)
             if not isinstance(story_data, dict):
                 # log
@@ -163,6 +163,7 @@ def _get_md_events(md_files, authors, filter_pre) -> List[MDEventBase]:
                 content=post.content
             )
         elif internal_properties.type[:7] == 'setting':
+            content = post.content
             if internal_properties.type == 'setting/character':
                 # event = CharacterSettingEvent()
                 continue
@@ -202,7 +203,7 @@ def get_events(
         'story', 'setting', 'setting/world', 'setting/character', 'image', 'not_image', 'all'
     ] = 'not_image',
     filter_pre: Literal['only', 'not', 'all'] = 'all'
-) -> List[EventBase]:
+) -> List[ALL_EVENT]:
     """根据条件，获取事件列表"""
     base_dir = os.path.join(os.path.dirname(__file__), '../event')
     events = list()

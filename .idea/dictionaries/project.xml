@@ -2,6 +2,7 @@
   <dictionary name="project">
     <words>
       <w>exts</w>
+      <w>fpath</w>
       <w>frontmatter</w>
       <w>ipath</w>
       <w>sttf</w>

@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Union
 from pydantic import BaseModel
 
 
@@ -93,3 +93,7 @@ class CharacterSettingEvent(SettingEvent):
 class WorldSettingEvent(SettingEvent):
     """世界设定事件基类"""
     type: str = "setting/world"
+
+
+# 定义特殊事件类型标记
+ALL_EVENT = Union[StoryEvent, CharacterSettingEvent, WorldSettingEvent, ImageEvent]
