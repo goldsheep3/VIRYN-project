@@ -23,31 +23,42 @@ class EventRelated(BaseModel):
     world: Optional[List[str]] = None
 
 
-class InternalProperties(BaseModel):
+class Properties(BaseModel):
     """事件内部属性基类"""
     title: str  # 事件名
     type: str  # story, setting/world, setting/character
     author: AuthorGroup
-    date: str  # 创建时间
-    last_date: str  # 最后修改时间
+    create_datetime: str  # 创建时间
+    last_datetime: str  # 最后修改时间
     state: str  # original, release, pre
     related: EventRelated
 
 
-class ExternalProperty(BaseModel):
+class AttributePre(BaseModel):
+    """事件外部属性PRE状态"""
+    key: str
+    value: str
+    last: Author
+    last_datetime: str
+    delete: bool = False
+
+
+class Attribute(BaseModel):
     """事件外部属性基类"""
-    name: str  # 属性名
+    key: List[str]  # 属性名
     value: str  # 属性值
-    last_author: Author  # 最后编辑者
-    create_author: Author  # 创建者
-    last_modified: str  # 最后修改时间
+    create: Author
+    last: Author
+    create_datetime: str
+    last_datetime: str
+    pre: Optional[AttributePre] = None  # PRE状态属性
 
 
 class EventBase(BaseModel):
     """事件基类
     id: 事件文件的相对路径，唯一标识"""
     id: str
-    properties: InternalProperties
+    properties: Properties
 
 
 class ImageEvent(EventBase):
@@ -81,7 +92,7 @@ class StoryEvent(MDEventBase):
 
 class SettingEvent(MDEventBase):
     """设定事件基类"""
-    content: List[ExternalProperty]
+    attributes: List[Attribute]
     type: str = "setting"
 
 

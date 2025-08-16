@@ -1,7 +1,7 @@
 from typing import List, Optional
 
 from api.models import (
-    EventBase, StoryEvent, SettingEvent, CharacterSettingEvent, WorldSettingEvent, ExternalProperty, Author, StoryData,
+    EventBase, StoryEvent, SettingEvent, CharacterSettingEvent, WorldSettingEvent, Attribute, Author, StoryData,
     ImageEvent, ALL_EVENT
 )
 from api import event_manager as manager
@@ -60,7 +60,7 @@ def get_event_detail(event_id: str, operator_qq: Optional[str] = None) -> EventB
 
 
 # 8. 获取设定事件外部属性
-def get_event_property(event_id: str, property_name: str, operator_qq: Optional[str] = None) -> ExternalProperty:
+def get_event_property(event_id: str, property_name: str, operator_qq: Optional[str] = None) -> Attribute:
     """获取指定事件的外部属性。"""
     ...
 
@@ -96,7 +96,7 @@ def create_image_event(event: EventBase, operator_qq: Optional[str] = None) -> d
 
 
 # 14. 新建设定事件外部属性
-def create_event_property(event_id: str, external_property: ExternalProperty, operator_qq: Optional[str] = None) -> dict:
+def create_event_property(event_id: str, external_property: Attribute, operator_qq: Optional[str] = None) -> dict:
     """新建设定事件外部属性。"""
     ...
 
@@ -114,7 +114,7 @@ def update_story_event_content(event_id: str, content: str, operator_qq: Optiona
 
 
 # 17. 修改setting事件外部属性
-def update_event_property(event_id: str, property_name: str, external_property: ExternalProperty,
+def update_event_property(event_id: str, property_name: str, external_property: Attribute,
                           operator_qq: Optional[str] = None) -> dict:
     """修改setting事件外部属性。"""
     ...
@@ -157,7 +157,7 @@ def get_pre_new_events(operator_qq: Optional[str] = None) -> List[EventBase]:
 
 
 # 24. 获取setting事件中存在pre的属性列表
-def get_pre_setting_properties(operator_qq: Optional[str] = None) -> List[ExternalProperty]:
+def get_pre_setting_properties(operator_qq: Optional[str] = None) -> List[Attribute]:
     """获取setting事件中存在pre的属性列表。"""
     ...
 

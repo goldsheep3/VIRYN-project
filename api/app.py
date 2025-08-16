@@ -2,7 +2,7 @@ from fastapi import FastAPI, Query
 from typing import List, Optional, Union
 
 from api.models import (
-    EventBase, StoryEvent, SettingEvent, CharacterSettingEvent, WorldSettingEvent, ExternalProperty, Author, StoryData,
+    EventBase, StoryEvent, SettingEvent, CharacterSettingEvent, WorldSettingEvent, Attribute, Author, StoryData,
     ImageEvent, ALL_EVENT
 )
 from api import utils
@@ -69,7 +69,7 @@ def get_event_detail(event_id: str, operator_qq: Optional[str] = Query(None)) ->
 
 # 8. 获取设定事件外部属性（根据事件id+属性名）
 @app.get('/event/{event_id}/property/{property_name}')
-def get_event_property(event_id: str, property_name: str, operator_qq: Optional[str] = Query(None)) -> ExternalProperty:
+def get_event_property(event_id: str, property_name: str, operator_qq: Optional[str] = Query(None)) -> Attribute:
     """获取指定事件的外部属性。"""
     return utils.get_event_property(event_id, property_name, operator_qq)
 
@@ -112,7 +112,7 @@ def create_image_event(event: EventBase, operator_qq: Optional[str] = Query(None
 # 14. 新建设定事件外部属性
 @app.post('/event/{event_id}/property')
 def create_event_property(
-        event_id: str, external_property: ExternalProperty, operator_qq: Optional[str] = Query(None)) -> dict:
+        event_id: str, external_property: Attribute, operator_qq: Optional[str] = Query(None)) -> dict:
     """新建设定事件外部属性。"""
     return utils.create_event_property(event_id, external_property, operator_qq)
 
@@ -133,7 +133,7 @@ def update_story_event_content(event_id: str, content: str, operator_qq: Optiona
 
 # 17. 修改setting事件外部属性
 @app.put('/event/{event_id}/property/{property_name}')
-def update_event_property(event_id: str, property_name: str, external_property: ExternalProperty,
+def update_event_property(event_id: str, property_name: str, external_property: Attribute,
                           operator_qq: Optional[str] = Query(None)) -> dict:
     """修改setting事件外部属性。"""
     return utils.update_event_property(event_id, property_name, external_property, operator_qq)
@@ -183,7 +183,7 @@ def get_pre_new_events(operator_qq: Optional[str] = Query(None)) -> List[EventBa
 
 # 24. 获取setting事件中存在pre的属性列表
 @app.get('/events/setting/property/pre')
-def get_pre_setting_properties(operator_qq: Optional[str] = Query(None)) -> List[ExternalProperty]:
+def get_pre_setting_properties(operator_qq: Optional[str] = Query(None)) -> List[Attribute]:
     """获取setting事件中存在pre的属性列表。"""
     return utils.get_pre_setting_properties(operator_qq)
 

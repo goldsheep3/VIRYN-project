@@ -6,7 +6,7 @@ import frontmatter
 import yaml
 
 from api.models import (
-    EventBase, StoryEvent, Author, StoryData, AuthorGroup, InternalProperties, EventRelated, StoryTime, ImageEvent,
+    EventBase, StoryEvent, Author, StoryData, AuthorGroup, Properties, EventRelated, StoryTime, ImageEvent,
     MDEventBase, ALL_EVENT
 )
 from api.log import ApiLogger
@@ -24,12 +24,12 @@ def _get_author_info(qq: Union[str, int], authors: dict) -> Author:
     return Author(qq=str(qq), name=name, email=email)
 
 
-def _get_internal_properties(
+def _get_properties(
         filepath,
         authors,
         filter_pre,
         img_yaml_info=None
-) -> Optional[Tuple[str, InternalProperties]]:
+) -> Optional[Tuple[str, Properties]]:
     """获取事件内部属性"""
     if not os.path.exists(filepath):
         # log: "File not found: {filepath}"
@@ -121,17 +121,17 @@ def _get_internal_properties(
         event_type = 'image'
 
     # All Internal Properties
-    internal_properties = InternalProperties(
+    properties = Properties(
         title=_metadata_get('title', str, os.path.basename(filepath)[:-3]),
         type=event_type,
         author=author_group,
-        date=_metadata_get('date', str, ''),
-        last_date=_metadata_get('last_date', str, ''),
+        create_datetime=_metadata_get('date', str, ''),
+        last_datetime=_metadata_get('last_date', str, ''),
         state=event_state,
         related=related
     )
 
-    return event_id, internal_properties
+    return event_id, properties
 
 
 def _get_md_events(md_files, authors, filter_pre) -> List[MDEventBase]:
@@ -140,11 +140,11 @@ def _get_md_events(md_files, authors, filter_pre) -> List[MDEventBase]:
     for fpath in md_files:
         post = frontmatter.load(fpath)
         fm = post.metadata
-        event_id, internal_properties = _get_internal_properties(fpath, authors, filter_pre)
-        if not internal_properties:
+        event_id, properties = _get_properties(fpath, authors, filter_pre)
+        if not properties:
             # log: "Failed to get internal properties for file: {fpath}"
             continue
-        if internal_properties.type == 'story':
+        if properties.type == 'story':
             story_data = fm.get('story', dict)
             if not isinstance(story_data, dict):
                 # log
@@ -158,16 +158,16 @@ def _get_md_events(md_files, authors, filter_pre) -> List[MDEventBase]:
             )
             event = StoryEvent(
                 id=event_id,
-                properties=internal_properties,
+                properties=properties,
                 story=story_obj,
                 content=post.content
             )
-        elif internal_properties.type[:7] == 'setting':
+        elif properties.type[:7] == 'setting':
             content = post.content
-            if internal_properties.type == 'setting/character':
+            if properties.type == 'setting/character':
                 # event = CharacterSettingEvent()
                 continue
-            elif internal_properties.type == 'setting/world':
+            elif properties.type == 'setting/world':
                 # event = WorldSettingEvent()
                 continue
             else:
@@ -186,13 +186,13 @@ def _get_img_events(img_files, img_yaml_info: dict, authors, filter_pre) -> List
     for ipath in img_files:
         # 用图片文件名查找 images.yaml 中的属性
         img_info = img_yaml_info.get(os.path.basename(ipath), {})
-        event_id, internal_properties = _get_internal_properties(ipath, authors, filter_pre, img_info)
-        if not internal_properties:
+        event_id, properties = _get_properties(ipath, authors, filter_pre, img_info)
+        if not properties:
             # log: "Failed to get internal properties for file: {ipath}"
             continue
         event = ImageEvent(
             id=event_id,
-            properties=internal_properties
+            properties=properties
         )
         img_events.append(event)
     return img_events
