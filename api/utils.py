@@ -4,7 +4,7 @@ from api.models import (
     EventBase, StoryEvent, SettingEvent, CharacterSettingEvent, WorldSettingEvent, Attribute, Author, StoryData,
     ImageEvent, ALL_EVENT
 )
-from api import event_manager as manager
+from api import manager
 from api.log import ApiLogger
 
 logger = ApiLogger()

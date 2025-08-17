@@ -2,11 +2,22 @@ from typing import List, Optional, Union
 from pydantic import BaseModel
 
 
+QQ_TYPE = Union[str, int]
+
+
 class Author(BaseModel):
     """创作者信息基类"""
     qq: str
     name: str
     email: Optional[str] = None
+
+    @staticmethod
+    def get(qq: QQ_TYPE, authors: dict):
+        """辅助函数 | 根据 qq 号，从 authors 数据中获取作者信息"""
+        author_data = authors.get(int(qq), {})
+        name = author_data.get('name', f'Creator {qq}')
+        email = author_data.get('email')
+        return Author(qq=str(qq), name=name, email=email)
 
 
 class AuthorGroup(BaseModel):
@@ -14,6 +25,15 @@ class AuthorGroup(BaseModel):
     create: Author
     last: Author
     contributors: List[Author]
+
+    @staticmethod
+    def get_all(create: QQ_TYPE, last: QQ_TYPE, contributors: List[QQ_TYPE], authors):
+        """辅助函数 | 根据 qq 号，从 authors 数据中获取作者信息"""
+        return AuthorGroup(
+            create=Author.get(create, authors),
+            last=Author.get(last, authors),
+            contributors=[Author.get(author, authors) for author in contributors if author]
+        )
 
 
 class EventRelated(BaseModel):
@@ -47,8 +67,7 @@ class Attribute(BaseModel):
     """事件外部属性基类"""
     key: List[str]  # 属性名
     value: str  # 属性值
-    create: Author
-    last: Author
+    authors: AuthorGroup
     create_datetime: str
     last_datetime: str
     pre: Optional[AttributePre] = None  # PRE状态属性

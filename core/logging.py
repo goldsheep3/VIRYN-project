@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from typing import Literal, Optional
+from typing import Literal
 import inspect
 
 LogLevel = Literal['TRACE', 'DEBUG', 'INFO', 'WARN', 'ERROR']
@@ -39,13 +39,8 @@ class Logger:
     def warn(self, message: str) -> None:
         self._log('WARN', message)
 
+    def warning(self, message: str) -> None:
+        self._log('WARN', message)
+
     def error(self, message: str) -> None:
         self._log('ERROR', message)
-
-# 简单测试代码
-if __name__ == '__main__':
-    logger = Logger('test')
-    logger.debug('Logger 测试日志')
-    logger.info('Logger Info 日志')
-    logger.warn('Logger Warn 日志')
-    logger.error('Logger Error 日志')
